@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1">
+<title>Lead Details</title>
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+<script
+	defer
+	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+	<section class="hero is-small">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title">Lead Manager</h1>
+				<h2 class="subtitle">
+					<a
+						th:href="@{/}"
+						class="is-size-4">Home</a>
+				</h2>
+			</div>
+		</div>
+	</section>
+	<div
+		class="container has-text-centered column is-three-fifths is-offset-one-fifth">
+		<span
+			class="is-size-2"
+			th:text="${lead.info.leadName}" /> <span class="small"> <a
+			th:href="@{/leads/{id}/edit(id=${lead.id})}">edit</a></span>
+		<div class="box">
+			<div class="row"></div>
+			<div class="row">
+				<strong>phone:</strong> <span th:text="${lead.info.phoneNumber}" />
+				• <strong>email:</strong> <span th:text="${lead.info.leadEmail}" />
+			</div>
+			<div class="row">
+				<strong>Notes:</strong> <span th:text="${lead.info.leadNotes}" /> <span><small>
+			</div>
+		</div>
+
+		<div class="row">
+			<a
+				class="button is-small"
+				th:href="@{/leads/{id}/touch(id=${lead.id})}">Add Touch</a></small></span> <a
+				class="button is-danger is-small"
+				th:href="@{/leads/{id}/delete(id=${lead.id})}">Delete</a>
+		</div>
+
+		<table class="table is-fullwidth">
+			<thead>
+				<tr>
+					<td style="width: 15%;">Date</td>
+					<td style="width: 80%;">Notes</td>
+					<td style="width: 5%;"></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="touch : ${lead.touches}">
+					<td
+						style="width: 20%;"
+						th:text="${touch.contactDate}" />
+					<td
+						style="width: 80%;"
+						th:text="${touch.notes}" />
+					<td>
+					<a th:href="@{/leads/{leadID}/touch/{touchID}/delete(leadID=${touch.salesLead.id}, touchID=${touch.id})}"><small>delete</small></a>
+					</td>
+
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

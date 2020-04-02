@@ -1,0 +1,121 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1">
+<title>Leads Manager</title>
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+<script
+	defer
+	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+	<section class="hero is-small">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title">Lead Manager</h1>
+				<h2 class="subtitle">
+					<a
+						href="/inputLead"
+						class="is-size-4">New Lead</a>
+				</h2>
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<div class="column is-three-fifths is-offset-one-fifth">
+			<div class="field">
+				<div class="control">
+					<input
+						id="searchinput"
+						name="searchinput"
+						type="text"
+						onkeyup="myFunction()"
+						placeholder="Search for names.."
+						class="input is-rounded  search-query">
+				</div>
+			</div>
+
+			<table
+				th:unless="${#lists.isEmpty(leads)}"
+				id="leads-table"
+				class="has-text-centered table is-bordered is-striped-is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th
+							style="width: 20%;"
+							class="has-text-centered">Name</th>
+						<th
+							style="width: 20%;"
+							class="has-text-centered">Last Contact</th>
+						<th
+							style="width: 60%;"
+							class="has-text-centered">Last Contact Notes</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="lead : ${leads}">
+						<td class="has-text-centered"><a
+							th:href="@{/leads/{id}(id=${lead.id})}"
+							th:text="${lead.info.leadName}">Name</a></td>
+
+						<td
+							class="has-text-centered"
+							th:if="${#lists.isEmpty(lead.touches)}"><strong>No
+								Contact</strong></td>
+
+						<td
+							class="has-text-centered"
+							th:unless="${#lists.isEmpty(lead.touches)}"
+							th:text="${lead.touches[#lists.size(lead.touches)-1].contactDate}" />
+						<td
+							class="has-text-centered"
+							th:if="${#lists.isEmpty(lead.touches)}"><strong>No
+								Contact</strong></td>
+
+						<td
+							class="has-text-centered"
+							th:unless="${#lists.isEmpty(lead.touches)}"
+							th:text="${#strings.abbreviate(lead.touches[#lists.size(lead.touches)-1].notes,50)}" />
+
+						<!-- th:text="${lead.touches[0].notes}" /> -->
+
+					</tr>
+				</tbody>
+			</table>
+			<div
+				th:if="${#lists.isEmpty(leads)}"
+				class="has-text-centered">
+				<h1 class="title">No Leads</h1>
+			</div>
+		</div>
+	</section>
+	<script>
+		function myFunction() {
+			// Declare variables 
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("searchinput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("leads-table");
+			tr = table.getElementsByTagName("tr");
+
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[0];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().indexOf(filter) > -1) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
