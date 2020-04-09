@@ -11,6 +11,8 @@
 <script
 	defer
 	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+	
 <script src="js/filter.js"></script>
 </head>
 <body>
@@ -34,7 +36,6 @@
 						id="searchinput"
 						name="searchinput"
 						type="text"
-						onkeyup="myFunction()"
 						placeholder="Search for names.."
 						class="input is-rounded  search-query">
 				</div>
@@ -58,7 +59,7 @@
 
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="leads-body">
 					<tr th:each="lead : ${leads}">
 						<td class="has-text-centered"><a
 							th:href="@{/leads/{id}(id=${lead.id})}"
